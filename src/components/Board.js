@@ -19,7 +19,11 @@ export default function Board() {
                 key={ index }
                 className="boardCell"
             >
-                { cardName( card ) }
+                <img
+                    src={ `cards/${ card }.svg` }
+                    alt={ cardName( card ) }
+                    className="card-image"
+                />
             </div> ) }
         </div> ) }
     </div>;
