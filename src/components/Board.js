@@ -2,6 +2,8 @@ import { useSelector } from "react-redux";
 import { bestHand } from "../gameLogic/boardLogic";
 import { cardName, handRank, handValue } from "../gameLogic/pokerLogic";
 
+import Card from "./Card";
+
 export default function Board() {
 
     const board = useSelector( state => state.board );
@@ -19,11 +21,7 @@ export default function Board() {
                 key={ index }
                 className="boardCell"
             >
-                <img
-                    src={ `cards/${ card }.svg` }
-                    alt={ cardName( card ) }
-                    className="card-image"
-                />
+                <Card card={ card } />
             </div> ) }
         </div> ) }
     </div>;
