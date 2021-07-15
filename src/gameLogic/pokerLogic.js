@@ -1,4 +1,4 @@
-const lookupTables = require( "./lookupTables" );
+const { flushes, fiveUniqueCards, hashAdjust, hashValues } = require( "./lookupTables" );
 
 exports.suits = { 8: "Clubs", 4: "Diamonds", 2: "Hearts", 1: "Spades" };
 exports.rankPrimes = [ 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41 ];
@@ -25,8 +25,8 @@ exports.fullDeck = shuffled => {
 exports.flush = hand => hand.reduce( ( total, card ) => total & card, 0xF000 );
 
 exports.flushBitPattern = flush => flush.reduce( ( total, card ) => total | card , 0 ) >>> 16;
-exports.flushRank = flush => lookupTables.flushes[ this.flushBitPattern( flush ) ];
-exports.fiveUniqueCardsRank = hand => lookupTables.fiveUniqueCards[ this.flushBitPattern( hand ) ];
+exports.flushRank = flush => flushes[ this.flushBitPattern( flush ) ];
+exports.fiveUniqueCardsRank = hand => fiveUniqueCards[ this.flushBitPattern( hand ) ];
 exports.primeMultiplicand = hand => hand.reduce( ( total, card ) => total * ( card & 0xFF ), 1 );
 
 exports.findFast = u => {
@@ -35,25 +35,26 @@ exports.findFast = u => {
     u += u << 8;
     u ^= u >>> 4;
     let a  = ( u + ( u << 2 ) ) >>> 19;
-    return a ^ lookupTables.hashAdjust[ ( u >>> 8 ) & 0x1ff ];
+    return a ^ hashAdjust[ ( u >>> 8 ) & 0x1ff ];
 };
 
 exports.handRank = hand => {
     if ( this.flush( hand ) ) return this.flushRank( hand );
     let fiveUniqueCardsRank = this.fiveUniqueCardsRank( hand );
     if ( fiveUniqueCardsRank ) return fiveUniqueCardsRank;
-    return lookupTables.hashValues[ this.findFast( this.primeMultiplicand( hand ) ) ];
+    return hashValues[ this.findFast( this.primeMultiplicand( hand ) ) ];
 };
 
-exports.handValue = handValue => {
-    if ( handValue > 6185 ) return "High card";
-    else if ( handValue > 3325 ) return "One pair";
-    else if ( handValue > 2467 ) return "Two pair";
-    else if ( handValue > 1609 ) return "Three of a kind";
-    else if ( handValue > 1599 ) return "Straight";
-    else if ( handValue > 322 )  return "Flush";
-    else if ( handValue > 166 )  return "Full house";
-    else if ( handValue > 10 )   return "Four of a kind";
+exports.handValue = hand => {
+    const value = this.handRank( hand );
+    if ( value > 6185 ) return "High card";
+    else if ( value > 3325 ) return "One pair";
+    else if ( value > 2467 ) return "Two pair";
+    else if ( value > 1609 ) return "Three of a kind";
+    else if ( value > 1599 ) return "Straight";
+    else if ( value > 322 )  return "Flush";
+    else if ( value > 166 )  return "Full house";
+    else if ( value > 10 )   return "Four of a kind";
     else return "Straight flush";
 };
 
