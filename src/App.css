@@ -17,7 +17,20 @@ body {
     flex-direction: column;
 }
 
-.card-image {
+.card-image-wrapper {
     padding: 0.5rem;
+}
+
+.card-image-wrapper img {
     filter: drop-shadow( 5px 5px 0.25rem black );
+}
+
+.chosen {
+    background-color: rgba( 0, 0, 0, 0.75 );
+}
+
+.guess-display {
+    width: 10rem;
+    height: 10rem;
+    resize: none;
 }

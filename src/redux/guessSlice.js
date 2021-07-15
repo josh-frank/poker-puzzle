@@ -4,6 +4,7 @@ const guessSlice = createSlice( {
     name: "guess",
     initialState: [],
     reducers: {
+        clearGuess() { return []; },
         addCardToGuess( state, action ) {
             return [ ...state, action.payload ];
         },
@@ -13,5 +14,5 @@ const guessSlice = createSlice( {
     }
 } );
 
-export const { addCardToGuess, removeCardFromGuess } = guessSlice.actions;
+export const { clearGuess, addCardToGuess, removeCardFromGuess } = guessSlice.actions;
 export default guessSlice.reducer;

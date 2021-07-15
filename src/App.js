@@ -1,7 +1,10 @@
 import { useDispatch } from 'react-redux';
 import { newBoard } from './redux/boardSlice';
+
 import './App.css';
+
 import Board from './components/Board';
+import GuessDisplay from './components/GuessDisplay';
 
 function App() {
 
@@ -11,6 +14,7 @@ function App() {
 
   return <div className="app">
     <Board />
+    <GuessDisplay />
   </div>;
 
 }
